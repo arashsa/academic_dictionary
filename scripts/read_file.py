@@ -8,9 +8,15 @@ from lxml import etree
 from collections import Counter
 import re
 
+global_most_frequent_words = []
 global_many_freq_lists = []
 global_word_list = []
-global_tokens = 0
+
+
+def setup():
+    with open('../1000_hifreq_lemmas_forms.txt') as fp:
+        for line in fp:
+            global_most_frequent_words.append(re.sub(r'\s+', '', line))
 
 
 def read_many_xml(filename, to_xml=' '):
@@ -46,7 +52,9 @@ def read_xml(filename, from_string=False):
 
 
 def read_txt(filename):
-    return create_word_list(filename)
+    file_object = open(filename, 'r')
+    file_as_string = file_object.read()
+    return create_word_list(file_as_string)
 
 
 def create_word_list(text_as_string):
@@ -54,7 +62,6 @@ def create_word_list(text_as_string):
     adds words to global_word_list
     increments tokens for each added token to global_word_list"""
     global global_word_list
-    global global_tokens
     word_list = []
 
     for w in text_as_string.split():
@@ -63,7 +70,6 @@ def create_word_list(text_as_string):
             word_list.append(word)
             if word not in global_word_list:
                 global_word_list.append(word)
-                global_tokens += 1
 
     return count_words(word_list)
 
@@ -83,5 +89,5 @@ def get_word_list():
     return global_word_list
 
 
-def get_tokens():
-    return global_tokens
+def get_most_frequent_words():
+    return global_most_frequent_words
