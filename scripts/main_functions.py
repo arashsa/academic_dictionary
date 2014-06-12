@@ -8,9 +8,10 @@ from lxml import etree
 from collections import Counter
 import re
 
-global_most_frequent_words = []
-global_many_freq_lists = []
-global_word_list = []
+global_most_frequent_words = []  # A list of most frequent Norwegian words
+global_many_freq_lists = []  # Frequency list of many xml files
+global_word_list_relative_frequent_words_removed = []
+global_word_list_most_frequent_removed = []  # List of words that have been read, most frequent words removed
 
 
 def setup():
@@ -61,17 +62,26 @@ def create_word_list(text_as_string):
     """Creates a list of all the words, without punctuation
     adds words to global_word_list
     increments tokens for each added token to global_word_list"""
-    global global_word_list
+    global global_most_frequent_words
+    global global_word_list_most_frequent_removed
+    global global_word_list_relative_frequent_words_removed
+
     word_list = []
 
     for w in text_as_string.split():
         word = w.translate(string.maketrans("", ""), string.punctuation).lower()
         if len(word) > 0:
             word_list.append(word)
-            if word not in global_word_list:
-                global_word_list.append(word)
+            if word not in global_word_list_most_frequent_removed and word not in global_most_frequent_words:
+                global_word_list_most_frequent_removed.append(word)
 
+    remove_relative_frequent_words()
     return count_words(word_list)
+
+
+def remove_relative_frequent_words():
+    # TODO: implement function
+    pass
 
 
 def count_words(word_list, print_words=False):
@@ -85,8 +95,8 @@ def count_words(word_list, print_words=False):
     return freq_dist
 
 
-def get_word_list():
-    return global_word_list
+def get_word_list_most_frequent_removed():
+    return global_word_list_most_frequent_removed
 
 
 def get_most_frequent_words():
