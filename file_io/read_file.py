@@ -9,6 +9,7 @@ from collections import Counter
 import re
 
 many_freq_lists = []
+global_word_list = []
 
 
 def read_many_xml(filename, to_xml=' '):
@@ -28,7 +29,7 @@ def read_many_xml(filename, to_xml=' '):
 def read_xml(filename, from_string=False):
     """Reads xml and strips tags
     creates a string with file, returns a frequency list of all the words in xml"""
-
+    # TODO: write the stripped xml to file
     if from_string:
         try:
             tree = ElTree.fromstring(filename)
@@ -49,12 +50,14 @@ def read_txt(filename):
 
 def create_word_list(text_as_string):
     """Creates a list of all the words, without punctuation"""
+    global global_word_list
     word_list = []
 
     for w in text_as_string.split():
         word = w.translate(string.maketrans("", ""), string.punctuation).lower()
         if len(word) > 0:
             word_list.append(word)
+            global_word_list.append(word)
 
     return count_words(word_list)
 
@@ -68,3 +71,7 @@ def count_words(word_list, print_words=False):
             print('{}: {}'.format(word, freq))
 
     return freq_dist
+
+
+def get_word_list():
+    return global_word_list
