@@ -8,22 +8,23 @@ from lxml import etree
 from collections import Counter
 import re
 
-many_freq_lists = []
+global_many_freq_lists = []
 global_word_list = []
+global_tokens = 0
 
 
 def read_many_xml(filename, to_xml=' '):
     """Reads a file with many xml documents"""
-    global many_freq_lists
+    global global_many_freq_lists
 
     with open(filename) as f:
         for line in f:
             to_xml += line
             if '</document>' in to_xml:
-                many_freq_lists.append(read_xml(to_xml, True))
+                global_many_freq_lists.append(read_xml(to_xml, True))
                 to_xml = ' '
 
-    return many_freq_lists
+    return global_many_freq_lists
 
 
 def read_xml(filename, from_string=False):
@@ -49,15 +50,20 @@ def read_txt(filename):
 
 
 def create_word_list(text_as_string):
-    """Creates a list of all the words, without punctuation"""
+    """Creates a list of all the words, without punctuation
+    adds words to global_word_list
+    increments tokens for each added token to global_word_list"""
     global global_word_list
+    global global_tokens
     word_list = []
 
     for w in text_as_string.split():
         word = w.translate(string.maketrans("", ""), string.punctuation).lower()
         if len(word) > 0:
             word_list.append(word)
-            global_word_list.append(word)
+            if word not in global_word_list:
+                global_word_list.append(word)
+                global_tokens += 1
 
     return count_words(word_list)
 
@@ -75,3 +81,7 @@ def count_words(word_list, print_words=False):
 
 def get_word_list():
     return global_word_list
+
+
+def get_tokens():
+    return global_tokens
