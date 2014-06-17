@@ -1,3 +1,5 @@
+__author__ = 'arashsaidi'
+
 global_most_frequent_words = []
 
 
