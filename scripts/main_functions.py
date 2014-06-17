@@ -75,12 +75,11 @@ def create_word_list(text_as_string):
             if word not in global_word_list_most_frequent_removed and word not in global_most_frequent_words:
                 global_word_list_most_frequent_removed.append(word)
 
-    remove_relative_frequent_words()
     return count_words(word_list)
 
 
-def remove_relative_frequent_words():
-    # TODO: implement function
+def count_relative_frequency():
+    """The Swedish Corpus method, creates a frequency value based on a series of summations"""
     pass
 
 
