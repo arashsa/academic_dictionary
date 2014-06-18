@@ -8,30 +8,26 @@ from lxml import etree
 from collections import Counter
 import re
 
-global_most_frequent_words = []  # A list of most frequent Norwegian words
-global_many_freq_lists = []  # Frequency list of many xml files
+global_word_list = []  # The word_list as read from file(s)
+global_word_list_many_freq_lists = []  # Frequency list of many xml files
+global_word_list_most_frequent_words = []  # List of most frequent words taken from a list of lemmas
+
 global_word_list_relative_frequent_words_removed = []
 global_word_list_most_frequent_removed = []  # List of words that have been read, most frequent words removed
 
 
-def setup():
-    with open('../1000_hifreq_lemmas_forms.txt') as fp:
-        for line in fp:
-            global_most_frequent_words.append(re.sub(r'\s+', '', line))
-
-
 def read_many_xml(filename, to_xml=' '):
     """Reads a file with many xml documents"""
-    global global_many_freq_lists
+    global global_word_list_many_freq_lists
 
     with open(filename) as f:
         for line in f:
             to_xml += line
             if '</document>' in to_xml:
-                global_many_freq_lists.append(read_xml(to_xml, True))
+                global_word_list_many_freq_lists.append(read_xml(to_xml, True))
                 to_xml = ' '
 
-    return global_many_freq_lists
+    return global_word_list_many_freq_lists
 
 
 def read_xml(filename, from_string=False):
@@ -62,25 +58,16 @@ def create_word_list(text_as_string):
     """Creates a list of all the words, without punctuation
     adds words to global_word_list
     increments tokens for each added token to global_word_list"""
-    global global_most_frequent_words
-    global global_word_list_most_frequent_removed
-    global global_word_list_relative_frequent_words_removed
-
+    global global_word_list
     word_list = []
 
     for w in text_as_string.split():
         word = w.translate(string.maketrans("", ""), string.punctuation).lower()
         if len(word) > 0:
             word_list.append(word)
-            if word not in global_word_list_most_frequent_removed and word not in global_most_frequent_words:
-                global_word_list_most_frequent_removed.append(word)
+            global_word_list.append(word)
 
     return count_words(word_list)
-
-
-def count_relative_frequency():
-    """The Swedish Corpus method, creates a frequency value based on a series of summations"""
-    pass
 
 
 def count_words(word_list, print_words=False):
@@ -94,9 +81,45 @@ def count_words(word_list, print_words=False):
     return freq_dist
 
 
-def get_word_list_most_frequent_removed():
+def reduced_frequency():
+    """The swedish method taken from the article: 'An Academic Word List for Swedish'"""
+    # TODO: create method
+    pass
+
+
+def remove_most_frequent_words():
+    """Should only be run once reduce_frequency method has been run"""
+    global global_word_list_most_frequent_removed
+    global global_word_list_most_frequent_words
+    global global_word_list_relative_frequent_words_removed
+
+    if not global_word_list_most_frequent_words:
+        with open('../1000_hifreq_lemmas_forms.txt') as fp:
+            for line in fp:
+                global_word_list_most_frequent_words.append(re.sub(r'\s+', '', line))
+
+    if global_word_list_relative_frequent_words_removed:
+        for w in global_word_list_relative_frequent_words_removed:
+            if w not in global_word_list_most_frequent_words:
+                global_word_list_most_frequent_removed.append(w)
+
+
+# GETTERS
+def get_global_word_list():
+    global global_word_list
+    return global_word_list
+
+
+def get_global_word_list_many_freq_lists():
+    global global_word_list_many_freq_lists
+    return global_word_list_many_freq_lists
+
+
+def get_global_word_list_relative_frequent_words_removed():
+    global global_word_list_relative_frequent_words_removed
+    return global_word_list_relative_frequent_words_removed
+
+
+def get_global_word_list_most_frequent_removed():
+    global global_word_list_most_frequent_removed
     return global_word_list_most_frequent_removed
-
-
-def get_most_frequent_words():
-    return global_most_frequent_words

@@ -1,6 +1,6 @@
 __author__ = 'arashsaidi'
 
-from nlp_functions import read_xml, read_txt
+from file_io import read_xml, read_txt
 import glob
 
 list_of_freqs = []
