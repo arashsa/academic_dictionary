@@ -1,6 +1,6 @@
 __author__ = 'arashsaidi'
 
-from file_io import read_xml, read_txt
+from create_word_lists import read_xml, read_txt
 import glob
 
 list_of_freqs = []

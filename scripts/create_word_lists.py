@@ -8,11 +8,13 @@ from lxml import etree
 from collections import Counter
 import re
 
-global_word_list = []  # The word_list as read from file(s)
-global_word_list_many_freq_lists = []  # Frequency list of many xml files
-global_word_list_most_frequent_words = []  # List of most frequent words taken from a list of lemmas
+most_frequent_words = []  # List of most frequent words taken from file
 
-global_word_list_relative_frequent_words_removed = []
+global_word_list = []  # The word_list as read from file(s)
+global_word_freq_list = {}  # List of frequencies for one xml/text document
+global_word_list_many_freq_lists = []  # Frequency list of many xml/text documents
+
+global_word_list_relative_frequent_words_removed = [] # List of words with relative frequent words removed
 global_word_list_most_frequent_removed = []  # List of words that have been read, most frequent words removed
 
 
@@ -70,56 +72,75 @@ def create_word_list(text_as_string):
     return count_words(word_list)
 
 
-def count_words(word_list, print_words=False):
+def count_words(word_list, print_words=False, one_freq_list=True):
     """Creates a dictionary with frequency of each word"""
     freq_dist = Counter(word_list)
+    global global_word_freq_list
 
     if print_words:
         for (word, freq) in freq_dist.items():
             print('{}: {}'.format(word, freq))
 
+    if one_freq_list:
+        global_word_freq_list = freq_dist.copy()
     return freq_dist
 
 
 def reduced_frequency():
     """The swedish method taken from the article: 'An Academic Word List for Swedish'"""
-    # TODO: create method
     pass
 
 
 def remove_most_frequent_words():
-    """Should only be run once reduce_frequency method has been run"""
+    """Should only be run once reduce_frequency method has been run
+    Otherwise the method will not run"""
     global global_word_list_most_frequent_removed
-    global global_word_list_most_frequent_words
+    global most_frequent_words
     global global_word_list_relative_frequent_words_removed
 
-    if not global_word_list_most_frequent_words:
+    if not most_frequent_words:
         with open('../1000_hifreq_lemmas_forms.txt') as fp:
             for line in fp:
-                global_word_list_most_frequent_words.append(re.sub(r'\s+', '', line))
+                most_frequent_words.append(re.sub(r'\s+', '', line))
 
     if global_word_list_relative_frequent_words_removed:
         for w in global_word_list_relative_frequent_words_removed:
-            if w not in global_word_list_most_frequent_words:
+            if w not in most_frequent_words:
                 global_word_list_most_frequent_removed.append(w)
 
 
-# GETTERS
+# GETTERS: Various global lists
+# Mainly for testing
 def get_global_word_list():
-    global global_word_list
-    return global_word_list
+    if global_word_list:
+        return global_word_list
+    else:
+        return 'global_word_list is empty'
 
 
 def get_global_word_list_many_freq_lists():
-    global global_word_list_many_freq_lists
-    return global_word_list_many_freq_lists
+    if global_word_list_many_freq_lists:
+        return global_word_list_many_freq_lists
+    else:
+        return 'global_word_list_many_freq_lists is empty'
 
 
 def get_global_word_list_relative_frequent_words_removed():
-    global global_word_list_relative_frequent_words_removed
-    return global_word_list_relative_frequent_words_removed
+    if global_word_list_relative_frequent_words_removed:
+        return global_word_list_relative_frequent_words_removed
+    else:
+        return 'global_word_list_relative_frequent_words_removed is empty'
 
 
 def get_global_word_list_most_frequent_removed():
-    global global_word_list_most_frequent_removed
-    return global_word_list_most_frequent_removed
+    if global_word_list_most_frequent_removed:
+        return global_word_list_most_frequent_removed
+    else:
+        return 'global_word_list_most_frequent_removed is empty'
+
+
+def get_global_word_freq_list():
+    if global_word_freq_list:
+        return global_word_freq_list
+    else:
+        return 'global_word_freq_list is empty'
