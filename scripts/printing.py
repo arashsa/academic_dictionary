@@ -1,3 +1,6 @@
+__author__ = 'arashsaidi'
+from collections import Counter
+
 # Functions for printing lists, dictionaries, and Count objects
 # Mainly for testing
 
@@ -13,5 +16,5 @@ def print_freq_list(the_dict):
 
         
 def print_count_object(count_object):
-    for c in count_object.items():
-        print c[0], c[1]
+    for (w, count) in count_object.items():
+        print w, count

@@ -3,6 +3,12 @@ __author__ = 'arashsaidi'
 from create_word_lists import *
 from printing import *
 
-# print len(get_word_list())
+read_xml('../corpus/kiap-norsk-xml/noecon05.xml')
+print len(global_word_list)
+reduced_frequency()
+print len(global_reduced_freqs)
+remove_most_frequent_words()
+print len(global_word_list)
+print len(global_reduced_freqs)
 
-freq_list = read_xml('../corpus/kiap-norsk-xml/noecon01.xml')
+
