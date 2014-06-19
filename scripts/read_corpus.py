@@ -5,11 +5,13 @@ import glob
 
 
 def read_all_files(p, ending):
-    # reads all files in a folder: '/folder/*.xml'
+    # reads all files in a folder:
+    # Example of usage: read_all_files('/folder/*.xml', 'xml')
     path = p
     files = glob.glob(path)
     for name in files:
         # read_current_file returns a frequency distribution
+        print 'Reading file: ' + name
         read_current_file(name, ending)
 
 

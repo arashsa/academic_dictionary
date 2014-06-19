@@ -116,6 +116,22 @@ def count_words(word_list, print_words=False):
     return freq_dist
 
 
+def remove_numbers():
+    global global_word_list
+
+    for w in global_word_list:
+        if is_number(w):
+            print w
+
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
+
 def remove_most_frequent_words():
     """Should only be run once reduce_frequency method has been run
     removes both from global_word_list and global_relative_freqs
@@ -133,6 +149,14 @@ def remove_most_frequent_words():
         if w in global_word_list:
             global_word_list.remove(w)
         if w in global_reduced_freqs:
+            del global_reduced_freqs[w]
+
+
+def remove_relative_frequent_words_below_score(score):
+    global global_reduced_freqs
+
+    for w, value in global_reduced_freqs.items():
+        if value < score:
             del global_reduced_freqs[w]
 
 
