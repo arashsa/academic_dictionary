@@ -1,2 +1,1 @@
-academic_dictionary
-===================
+### academic_dictionary
