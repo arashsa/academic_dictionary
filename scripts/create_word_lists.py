@@ -17,8 +17,6 @@ global_word_list_many_freq_lists = []  # Frequency list of many xml/text documen
 
 global_reduced_freqs = {}  # Dict of relative frequency
 
-global_word_list_finished = []  # The preliminary finished list
-
 
 def read_many_xml_in_one_file(filename, to_xml=' ', write_to_file=False):
     """Reads a file with many xml documents
@@ -121,7 +119,7 @@ def remove_numbers():
 
     for w in global_word_list:
         if is_number(w):
-            print w
+            global_word_list.remove(w)
 
 
 def is_number(s):
@@ -182,8 +180,10 @@ def get_global_word_freq_list():
         return 'global_word_freq_list is empty'
 
 
-def get_finished_list():
-    if global_word_list_finished:
-        return global_word_list_finished
+def get_global_reduced_freqs():
+    if global_reduced_freqs:
+        return global_reduced_freqs
     else:
-        'global_word_list_finished is empty'
+        return 'global_word_freq_list is empty'
+
+
