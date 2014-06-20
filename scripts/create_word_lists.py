@@ -39,6 +39,7 @@ def read_xml(filename, from_string=False, write_to_file=False):
     creates a string with file, returns a frequency list of all the words in xml
     """
     # TODO: write the stripped xml to file for OBT (Oslo Bergen Tagger)
+    print 'reading xml'
     if write_to_file:
         pass
 
@@ -70,20 +71,30 @@ def create_word_list(text_as_string):
     increments tokens for each added token to global_word_list
     Returns the word list for all documents read in one session
     """
+    print 'creating word list'
     global global_word_list
 
     for w in text_as_string.split():
         word = w.translate(string.maketrans("", ""), string.punctuation).lower()
-        if len(word) > 0:
+        if len(word) > 0 and not is_number(word):
             global_word_list.append(word)  # Appends each word to global word list
 
     return global_word_list
+
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 
 def reduced_frequency():
     """The swedish method taken from the article: 'An Academic Word List for Swedish
     A summation of frequencies of a word in a document given a range
     """
+    print 'reduced frequency method'
     global global_word_list
     global global_reduced_freqs
 
@@ -95,7 +106,8 @@ def reduced_frequency():
         interval = doc_length / freq
         if interval != doc_length:
             for i in range(0, doc_length, interval):
-                global_reduced_freqs[w] += 1
+                if w in global_word_list[i: interval + i]:
+                    global_reduced_freqs[w] += 1
         else:
             global_reduced_freqs[w] = 1
 
@@ -114,26 +126,11 @@ def count_words(word_list, print_words=False):
     return freq_dist
 
 
-def remove_numbers():
-    global global_word_list
-
-    for w in global_word_list:
-        if is_number(w):
-            global_word_list.remove(w)
-
-
-def is_number(s):
-    try:
-        float(s)
-        return True
-    except ValueError:
-        return False
-
-
 def remove_most_frequent_words():
     """Should only be run once reduce_frequency method has been run
     removes both from global_word_list and global_relative_freqs
     """
+    print 'removing most frequent words'
     global most_frequent_words
     global global_reduced_freqs
     global global_word_list
@@ -151,6 +148,7 @@ def remove_most_frequent_words():
 
 
 def remove_relative_frequent_words_below_score(score):
+    print 'removing words with a relative frequency below: ', score
     global global_reduced_freqs
 
     for w, value in global_reduced_freqs.items():
@@ -184,6 +182,6 @@ def get_global_reduced_freqs():
     if global_reduced_freqs:
         return global_reduced_freqs
     else:
-        return 'global_word_freq_list is empty'
+        return 'get_global_reduced_freqs is empty'
 
 

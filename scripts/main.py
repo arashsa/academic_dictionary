@@ -7,7 +7,6 @@ from write_to_file import *
 
 
 def create_list(print_alpha=False, print_val=False):
-    remove_numbers()
     reduced_frequency()
     remove_most_frequent_words()
     remove_relative_frequent_words_below_score(15)
@@ -18,7 +17,7 @@ def create_list(print_alpha=False, print_val=False):
         print_dictionary_by_value(get_global_reduced_freqs())
 
 
-# read_all_files('../corpus/kiap-norsk-xml/*.xml', 'xml')
-read_xml('../corpus/kiap-norsk-xml/noling01.xml')
+read_all_files('../corpus/kiap-norsk-xml/*.xml', 'xml')
+
 create_list()
 write_dict_to_file(get_global_reduced_freqs())
