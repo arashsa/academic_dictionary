@@ -7,6 +7,7 @@ from write_to_file import *
 
 
 def create_list(print_alpha=False, print_val=False):
+    create_most_freq_word_list('../1000_hifreq_lemmas_forms.txt')
     create_english_word_list('../brit-a-z.txt')
     reduced_frequency()
     remove_most_frequent_words_numbers_english()

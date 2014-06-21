@@ -22,9 +22,19 @@ global_reduced_freqs = {}  # Dict of relative frequency
 def create_english_word_list(filename):
     global global_english_word_list
 
-    with open(filename) as f:
-        for line in f:
-            global_english_word_list.append(line)
+    if not global_english_word_list:
+        with open(filename) as f:
+            for line in f:
+                global_english_word_list.append(re.sub(r'\s+', '', line))
+
+
+def create_most_freq_word_list(filename):
+    global most_frequent_words
+
+    if not most_frequent_words:
+        with open(filename) as fp:
+            for line in fp:
+                most_frequent_words.append(re.sub(r'\s+', '', line))
 
 
 def read_many_xml_in_one_file(filename, to_xml=' ', write_to_file=False):
@@ -140,19 +150,14 @@ def remove_most_frequent_words_numbers_english():
     removes both from global_word_list and global_relative_freqs
     """
     print 'removing most frequent words'
+    print 'removing numbers'
+    print 'removing english words'
     global most_frequent_words
     global global_reduced_freqs
     global global_word_list
 
-    if not most_frequent_words:
-        with open('../1000_hifreq_lemmas_forms.txt') as fp:
-            for line in fp:
-                most_frequent_words.append(re.sub(r'\s+', '', line))
-
-    for w in most_frequent_words:
-        if w in global_word_list or is_number(w) or w in global_english_word_list:  # Can remove this in the end
-            global_word_list.remove(w)
-        if w in global_reduced_freqs or is_number(w) or w in global_english_word_list:
+    for w, v in global_reduced_freqs.items():
+        if w in most_frequent_words or is_number(w) or w in global_english_word_list or len(w) == 1:
             del global_reduced_freqs[w]
 
 
