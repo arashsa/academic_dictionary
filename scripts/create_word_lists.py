@@ -11,11 +11,20 @@ import re
 most_frequent_words = []  # List of most frequent words taken from file
 
 global_word_list = []  # The word_list as read from file(s)
+global_english_word_list = []
 
 global_word_freq_list = {}  # List of frequencies for one xml/text document
 global_word_list_many_freq_lists = []  # Frequency list of many xml/text documents
 
 global_reduced_freqs = {}  # Dict of relative frequency
+
+
+def create_english_word_list(filename):
+    global global_english_word_list
+
+    with open(filename) as f:
+        for line in f:
+            global_english_word_list.append(line)
 
 
 def read_many_xml_in_one_file(filename, to_xml=' ', write_to_file=False):
@@ -76,7 +85,7 @@ def create_word_list(text_as_string):
 
     for w in text_as_string.split():
         word = w.translate(string.maketrans("", ""), string.punctuation).lower()
-        if len(word) > 0 and not is_number(word):
+        if len(word) > 0:
             global_word_list.append(word)  # Appends each word to global word list
 
     return global_word_list
@@ -126,7 +135,7 @@ def count_words(word_list, print_words=False):
     return freq_dist
 
 
-def remove_most_frequent_words():
+def remove_most_frequent_words_numbers_english():
     """Should only be run once reduce_frequency method has been run
     removes both from global_word_list and global_relative_freqs
     """
@@ -141,9 +150,9 @@ def remove_most_frequent_words():
                 most_frequent_words.append(re.sub(r'\s+', '', line))
 
     for w in most_frequent_words:
-        if w in global_word_list:
+        if w in global_word_list or is_number(w) or w in global_english_word_list:  # Can remove this in the end
             global_word_list.remove(w)
-        if w in global_reduced_freqs:
+        if w in global_reduced_freqs or is_number(w) or w in global_english_word_list:
             del global_reduced_freqs[w]
 
 

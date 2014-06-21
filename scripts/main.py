@@ -7,8 +7,9 @@ from write_to_file import *
 
 
 def create_list(print_alpha=False, print_val=False):
+    create_english_word_list('../brit-a-z.txt')
     reduced_frequency()
-    remove_most_frequent_words()
+    remove_most_frequent_words_numbers_english()
     remove_relative_frequent_words_below_score(15)
 
     if print_alpha:
