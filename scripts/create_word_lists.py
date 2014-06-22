@@ -109,8 +109,8 @@ def is_number(s):
         return False
 
 
-def reduced_frequency():
-    """The swedish method taken from the article: 'An Academic Word List for Swedish
+def reduced_frequency(cutoff):
+    """The swedish method taken from the article: 'An Academic Word List for Swedish'
     A summation of frequencies of a word in a document given a range
     """
     print 'reduced frequency method'
@@ -123,12 +123,11 @@ def reduced_frequency():
     for (w, freq) in freq_list.items():
         global_reduced_freqs[w] = 0
         interval = doc_length / freq
-        if interval != doc_length:
+        if interval != doc_length and freq > cutoff:
             for i in range(0, doc_length, interval):
+                # Checking if a word is in interval
                 if w in global_word_list[i: interval + i]:
                     global_reduced_freqs[w] += 1
-        else:
-            global_reduced_freqs[w] = 1
 
 
 def count_words(word_list, print_words=False):
@@ -157,6 +156,7 @@ def remove_most_frequent_words_numbers_english():
     global global_word_list
 
     for w, v in global_reduced_freqs.items():
+        # Removes words of length 1, don't know if this should be done here
         if w in most_frequent_words or is_number(w) or w in global_english_word_list or len(w) == 1:
             del global_reduced_freqs[w]
 

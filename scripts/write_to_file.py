@@ -4,7 +4,7 @@ import operator
 
 
 def write_list_to_file(the_list, args=''):
-    make_file = open('test_file.txt', 'w')
+    make_file = open('test_list.txt', 'w')
     if args:
         make_file.write(args + '\n')
     for w in the_list:
