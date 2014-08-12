@@ -1,7 +1,5 @@
 __author__ = 'arashsaidi'
 
-import operator
-
 
 def write_list_to_file(the_list, args=''):
     make_file = open('test_list.txt', 'w')
