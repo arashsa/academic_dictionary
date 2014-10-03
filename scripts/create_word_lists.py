@@ -37,6 +37,15 @@ def create_most_freq_word_list(filename):
                 most_frequent_words.append(re.sub(r'\s+', '', line))
 
 
+def read_tagged_word_list(filename):
+    # TODO: write and test this method
+    """This reads a file that has been tagged by the OBT-tagger.
+    """
+    print 'reading tagged file'
+
+    return filename
+
+
 def read_many_xml_in_one_file(filename, to_xml=' ', write_to_file=False):
     """Reads a file with many xml documents
     """
