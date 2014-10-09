@@ -13,6 +13,8 @@ class ReadDUO():
             self.start += 100
 
     def write_url_to_file(self):
+        """Reads a set of URLs and extracts links to DUO files
+        This will download all urls pointing to the pdf files on DUO"""
         f = requests.get(self.url + str(self.start))
         html = f.text.encode('utf8').split()
         html_len = len(html)
@@ -31,7 +33,6 @@ class ReadDUO():
                     file_object.write(link)
 
         file_object.close()
-
 
 test = ReadDUO()
 test.read_from_url()

@@ -20,6 +20,5 @@ def create_list(print_alpha=False, print_val=False, cutoff=15):
 
 
 read_all_files('../corpus/kiap-norsk-xml/*.xml', 'xml')
-
 create_list()
 write_dict_to_file(get_global_reduced_freqs())
