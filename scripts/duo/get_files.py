@@ -2,6 +2,7 @@ import os
 import subprocess
 import urllib2
 import random
+import time
 
 
 class GetFiles():
@@ -14,20 +15,20 @@ class GetFiles():
         self.path = '/Users/arashsaidi/Work/TextLab/Code/academic_dictionary/scripts/duo/'
         self.current_file = ''
 
-        # # Start file (duo[number])
-        # self.range = 10400
-        # # Until this file
-        # self.range_end = 11000
-        # # Folder to save in
-        # self.save_txt_folder = '101-110/'
+        # Start file (duo[number])
+        self.range = 19400
+        # Until this file
+        self.range_end = 20000
+        # Folder to save in
+        self.save_txt_folder = '191-200/'
 
         # Start file (duo[number])
-        self.range = 110
-        self.range *= 100
-        # Until this file
-        self.range_end = self.range + 900
-        # Folder to save in
-        self.save_txt_folder = str(self.range)[0:3] + '-' + str(self.range_end)[0:3] + '/'
+        # self.range = 191
+        # self.range *= 100
+        # # Until this file
+        # self.range_end = self.range + 900
+        # # Folder to save in
+        # self.save_txt_folder = str(self.range)[0:3] + '-' + str(self.range_end)[0:3] + '/'
 
     def print_test(self):
         print "from: {}. to: {}. folder: {}".format(self.range, self.range_end, self.save_txt_folder)
@@ -55,19 +56,30 @@ class GetFiles():
         self.print_test()
 
     def get_pdf(self, url):
+        """Tries to download and convert pdf to txt"""
         self.current_file = self.path + str(self.number_of_temp_pdf) + '.pdf'
-        f = urllib2.urlopen(url)
-        data = f.read()
+
+        try:
+            f = urllib2.urlopen(url)
+        except urllib2.URLError or urllib2.HTTPError:
+            f = None
+
+        if f:
+            data = f.read()
+        else:
+            data = ''
+
         with open(self.current_file, "wb") as code:
             code.write(data)
             code.close()
 
     def convert_to_pdf(self):
-        subprocess.call(['javaw', '-jar', '/Users/arashsaidi/Work/Tools/pdf-converter/pdfbox-app-1.8.6.jar',
+        subprocess.call(['java', '-jar', '/Users/arashsaidi/Work/Tools/pdf-converter/pdfbox-app-1.8.6.jar',
                          'ExtractText', self.current_file,
                          '/Users/arashsaidi/Work/TextLab/Code/academic_dictionary/corpus/duo/' + self.save_txt_folder +
                          self.links[:-4] + '_' + str(self.number_of_links) + '.txt'])
 
 test = GetFiles()
+time.sleep(60)
 test.print_test()
 test.read_urls_from_files()

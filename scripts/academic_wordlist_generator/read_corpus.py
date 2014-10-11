@@ -1,7 +1,8 @@
 __author__ = 'arashsaidi'
 
-from create_word_lists import read_xml, read_txt
 import glob
+
+from scripts.academic_wordlist_generator.create_word_lists import read_xml, read_txt
 
 
 def read_all_files(p, ending):

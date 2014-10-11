@@ -1,9 +1,9 @@
 __author__ = 'arashsaidi'
 
-from create_word_lists import *
-from printing import *
-from read_corpus import *
-from write_to_file import *
+from scripts.academic_wordlist_generator.create_word_lists import *
+from scripts.academic_wordlist_generator.printing import *
+from scripts.academic_wordlist_generator.read_corpus import *
+from scripts.academic_wordlist_generator.write_to_file import *
 
 
 def create_list(print_alpha=False, print_val=False, cutoff=15):
