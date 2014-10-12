@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 import shutil
+import random
 
 
 class Detection():
@@ -28,13 +29,15 @@ class Detection():
                       'bm': 0,
                       'nn': 0}
 
-        self.en_count = 0
-        self.bm_count = 0
-        self.nn_count = 0
-        self.corrupt_count = 0
-        self.all_count = 0
+        self.en_count = 1
+        self.bm_count = 1
+        self.nn_count = 1
+        self.corrupt_count = 1
+        self.all_count = 1
 
         self.info = open('info.txt', 'w')
+
+        self.random_list = random.sample(range(40000), 35000)
 
     def read_files(self, path='/Users/arashsaidi/Work/TextLab/Code/academic_dictionary/corpus/duo/'):
         """ Recursively traverses all files in the path
@@ -76,19 +79,19 @@ class Detection():
             # print "File may be corrupted"
             # self.write_info(current_file)
             self.corrupt_count += 1
-            filename = 'DUO_Corrupt_' + str(self.corrupt_count) + '.txt'
+            filename = 'DUO_Corrupt_' + str(self.random_list[self.corrupt_count]) + '.txt'
             shutil.copyfile(path_to_file, "../../corpus/DUO_Corpus/Corrupted/" + filename)
         elif key == 'bm':
             self.bm_count += 1
-            filename = 'DUO_BM_' + str(self.bm_count) + '.txt'
+            filename = 'DUO_BM_' + str(self.random_list[self.bm_count]) + '.txt'
             shutil.copyfile(path_to_file, "../../corpus/DUO_Corpus/Bokmaal/" + filename)
         elif key == 'nn':
             self.nn_count += 1
-            filename = 'DUO_NN_' + str(self.nn_count) + '.txt'
+            filename = 'DUO_NN_' + str(self.random_list[self.nn_count]) + '.txt'
             shutil.copyfile(path_to_file, "../../corpus/DUO_Corpus/Nynorsk/" + filename)
         elif key == 'en':
             self.en_count += 1
-            filename = 'DUO_English_' + str(self.en_count) + '.txt'
+            filename = 'DUO_English_' + str(self.random_list[self.en_count]) + '.txt'
             shutil.copyfile(path_to_file, "../../corpus/DUO_Corpus/English/" + filename)
 
         # if self.all_count % 100 == 0:
@@ -102,6 +105,7 @@ class Detection():
     def write_info(self):
         self.info.write("-" * 30)
         self.info.write("DUO corpus:")
+        self.info.write("All articles: {}\n".format(self.all_count))
         self.info.write("English articles: {}\nBM articles: {}\nNN articles: {}\nCorrupt articles: {}".format(
             test.en_count,
             test.bm_count,
@@ -111,6 +115,8 @@ class Detection():
 
 test = Detection()
 test.read_files()
+test.write_info()
+print "All articles: {}\n.".format(test.all_count)
 print "English articles: {}\nBM articles: {}\nNN articles: {}\nCorrupt articles: {}".format(test.en_count,
                                                                                             test.bm_count,
                                                                                             test.nn_count,

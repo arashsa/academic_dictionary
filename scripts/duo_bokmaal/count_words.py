@@ -5,6 +5,10 @@ import nltk
 
 
 def count_words():
+    """ Two different methods (one commented out) for counting words in a set of documents.
+    First is more precise, but quite slow.
+    :return: None
+    """
     info = open('/Users/arashsaidi/Work/TextLab/Code/academic_dictionary/corpus/DUO_Corpus/info_bm.txt', 'w')
     documents = 0
     words = 0
@@ -25,9 +29,9 @@ def count_words():
                 current_file = open(current_path_to_file, 'r').read().split()
                 words += len(current_file)
 
-    info.write('Bokmaal Corpus: ')
-    info.write('Number of documents: {}/n'.format(documents))
-    info.write('Number of words: {}/n'.format(words))
+    info.write('Bokmaal Corpus: \n')
+    info.write('Number of documents: {}\n'.format(documents))
+    info.write('Number of words: {}\n'.format(words))
     info.close()
 
 count_words()
