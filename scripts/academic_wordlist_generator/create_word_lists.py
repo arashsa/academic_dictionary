@@ -67,7 +67,7 @@ def read_xml(filename, from_string=False, write_to_file=False):
     creates a string with file, returns a frequency list of all the words in xml
     """
     # TODO: write the stripped xml to file for OBT (Oslo Bergen Tagger)
-    print 'reading xml'
+    # print 'reading xml'
     if write_to_file:
         pass
 
@@ -99,7 +99,7 @@ def create_word_list(text_as_string):
     increments tokens for each added token to global_word_list
     Returns the word list for all documents read in one session
     """
-    print 'creating word list'
+    # print 'creating word list'
     global global_word_list
 
     for w in text_as_string.split():
@@ -128,10 +128,21 @@ def reduced_frequency(cutoff):
 
     doc_length = len(global_word_list)
     freq_list = count_words(global_word_list)  # Calls count_words()
+    # print "Length of documents: {}".format(doc_length)
+    # print "Freq List: {}".format(freq_list)
+    # print "Global word list: {}".format(global_word_list)
+
+    print len(freq_list)
+
+    timer = 0
 
     for (w, freq) in freq_list.items():
+        timer += 1
+        if timer % 100 == 0:
+            print timer
         global_reduced_freqs[w] = 0
         interval = doc_length / freq
+        # print "interval: {}".format(interval)
         if interval != doc_length and freq > cutoff:
             for i in range(0, doc_length, interval):
                 # Checking if a word is in interval

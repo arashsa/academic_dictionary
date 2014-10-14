@@ -12,7 +12,7 @@ def read_all_files(p, ending):
     files = glob.glob(path)
     for name in files:
         # read_current_file returns a frequency distribution
-        print 'Reading file: ' + name
+        # print 'Reading file: ' + name
         read_current_file(name, ending)
 
 
